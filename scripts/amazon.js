@@ -45,10 +45,32 @@ products.forEach((product)=>{
             Added
           </div>
 
-          <button class="add-to-cart-button button-primary">
+          <button class="add-to-cart-button button-primary js-add-to-cart" data-product-name="${product.name}">
             Add to Cart
           </button>
         </div>`
 })
 
 document.querySelector('.js-products-grid').innerHTML=productHTML;
+document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
+  button.addEventListener('click',()=>{
+    const productName=button.dataset.productName;
+    // Check if the product already exists in the cart by inbuilt find which returns that item if it is found else undifined
+    //const productInCart = cart.find(item => item.name === productName);
+
+    // a similar implimentation of this is using for each loop
+    let matchingItem;//undifined is not found
+    cart.forEach((item)=>{
+      if(item.name===productName)  
+        matchingItem=item;
+    })
+    if(matchingItem)
+      matchingItem.quantity++;
+    else
+      cart.push({
+        name: productName,
+        quantity: 1
+      });
+    console.log(cart)
+  })
+})
