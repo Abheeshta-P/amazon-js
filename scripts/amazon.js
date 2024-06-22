@@ -24,7 +24,7 @@ products.forEach((product)=>{
           </div>
 
           <div class="product-quantity-container">
-            <select>
+            <select class=js-quantity-selector-${product.id}>
               <option selected value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -53,30 +53,42 @@ products.forEach((product)=>{
 })
 
 document.querySelector('.js-products-grid').innerHTML=productHTML;
+
+//use button to add item to cart
 document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
+
+  //to identify which element was clicked
   button.addEventListener('click',()=>{
     const productId=button.dataset.productId;
+
+    //to identify which value was selected in select 
+    const selectElement=document.querySelector(`.js-quantity-selector-${productId}`);
+    //gives string value by default in DOM  , while adding it concatenates so
+    const selectedValue = parseInt(selectElement.value); //or use Number()
+
     // Check if the product already exists in the cart by inbuilt find which returns that item if it is found else undifined
     //const productInCart = cart.find(item => item.name === productName);
 
-    // a similar implimentation of this is using for each loop
+    // a similar implementation of this is using for each loop
     let matchingItem;//undifined is not found
     cart.forEach((item)=>{
       if(item.id===productId)  
         matchingItem=item;
     })
     if(matchingItem)
-      matchingItem.quantity++;
+      matchingItem.quantity+=selectedValue;
     else
       cart.push({
         id: productId,
-        quantity: 1
+        quantity: selectedValue
       });
     console.log(cart)
     updateCartQuantity();
   })
 })
 
+
+//update cart quantity in image
 function updateCartQuantity(){
   let quantity=0;
   cart.forEach((item)=>{
