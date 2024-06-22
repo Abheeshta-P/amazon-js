@@ -40,7 +40,7 @@ products.forEach((product)=>{
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart">
+          <div class="added-to-cart js-added-to-cart-${product.id}">
             <img src="images/icons/checkmark.png">
             Added
           </div>
@@ -54,17 +54,21 @@ products.forEach((product)=>{
 
 document.querySelector('.js-products-grid').innerHTML=productHTML;
 
+let timerId;
 //use button to add item to cart
 document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
 
   //to identify which element was clicked
   button.addEventListener('click',()=>{
-    const productId=button.dataset.productId;
+    const {productId}=button.dataset;//destructuring property
 
     //to identify which value was selected in select 
     const selectElement=document.querySelector(`.js-quantity-selector-${productId}`);
     //gives string value by default in DOM  , while adding it concatenates so
-    const selectedValue = parseInt(selectElement.value); //or use Number()
+    const quantity = parseInt(selectElement.value); //or use Number()
+
+    //to invoke added message
+    messageAdded(productId)
 
     // Check if the product already exists in the cart by inbuilt find which returns that item if it is found else undifined
     //const productInCart = cart.find(item => item.name === productName);
@@ -72,15 +76,15 @@ document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
     // a similar implementation of this is using for each loop
     let matchingItem;//undifined is not found
     cart.forEach((item)=>{
-      if(item.id===productId)  
+      if(item.productId===productId)  
         matchingItem=item;
     })
     if(matchingItem)
-      matchingItem.quantity+=selectedValue;
+      matchingItem.quantity+=quantity;
     else
       cart.push({
-        id: productId,
-        quantity: selectedValue
+        productId,//destructuring property
+        quantity
       });
     console.log(cart)
     updateCartQuantity();
@@ -95,4 +99,14 @@ function updateCartQuantity(){
     quantity+=item.quantity;
   })
   document.querySelector('.js-cart-quantity').innerHTML=quantity;
+}
+
+function messageAdded(productId){
+  //to select a item which was added
+  const messageAddedToCart=document.querySelector(`.js-added-to-cart-${productId}`)
+  clearTimeout(timerId)
+  timerId=setTimeout(()=>{
+    messageAddedToCart.classList.remove('isVisible');
+  },2000)
+  messageAddedToCart.classList.add('isVisible');
 }
