@@ -1,3 +1,9 @@
+//if we add a cart variable here it causes naming conflict so make this as module and import cart.js here
+//for modules we need to use a server
+//import cart from '../data/cart.js' --> if we use default export
+
+import {cart} from '../data/cart.js'
+
 let productHTML=``;
 products.forEach((product)=>{
        productHTML+=
