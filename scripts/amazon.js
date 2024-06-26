@@ -2,8 +2,10 @@
 //for modules we need to use a server
 //import cart from '../data/cart.js' --> if we use default export
 
-import {cart} from '../data/cart.js'
+import {cart,addToCart} from '../data/cart.js'
 import {products} from '../data/products.js'
+//import * as cartModule fom '../data/cart.js';
+//cartModule.cart also cartModule.addToCart('id')
 
 let productHTML=``;
 products.forEach((product)=>{
@@ -61,52 +63,17 @@ products.forEach((product)=>{
 
 document.querySelector('.js-products-grid').innerHTML=productHTML;
 
-let timerId;
-//use button to add item to cart
-document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
-
-  //to identify which element was clicked
-  button.addEventListener('click',()=>{
-    const {productId}=button.dataset;//destructuring property
-
-    //to identify which value was selected in select 
-    const selectElement=document.querySelector(`.js-quantity-selector-${productId}`);
-    //gives string value by default in DOM  , while adding it concatenates so
-    const quantity = parseInt(selectElement.value); //or use Number()
-
-    //to invoke added message
-    messageAdded(productId)
-
-    // Check if the product already exists in the cart by inbuilt find which returns that item if it is found else undifined
-    //const productInCart = cart.find(item => item.name === productName);
-
-    // a similar implementation of this is using for each loop
-    let matchingItem;//undifined is not found
-    cart.forEach((item)=>{
-      if(item.productId===productId)  
-        matchingItem=item;
-    })
-    if(matchingItem)
-      matchingItem.quantity+=quantity;
-    else
-      cart.push({
-        productId,//destructuring property
-        quantity
-      });
-    console.log(cart)
-    updateCartQuantity();
-  })
-})
-
+// ************ To made cart interactive ***********
 
 //update cart quantity in image
 function updateCartQuantity(){
   let quantity=0;
-  cart.forEach((item)=>{
-    quantity+=item.quantity;
+  cart.forEach((cartItem)=>{
+    quantity+=cartItem.quantity;
   })
   document.querySelector('.js-cart-quantity').innerHTML=quantity;
 }
+
 
 function messageAdded(productId){
   //to select a item which was added
@@ -117,3 +84,24 @@ function messageAdded(productId){
   },2000)
   messageAddedToCart.classList.add('isVisible');
 }
+
+let timerId;
+//use button to add item to cart
+document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
+
+  //to identify which element was clicked
+  button.addEventListener('click',()=>{
+    const {productId}=button.dataset;//destructuring property
+
+    //to invoke added message
+    messageAdded(productId)
+
+    // Check if the product already exists in the cart by inbuilt find which returns that item if it is found else undifined
+    //const productInCart = cart.find(item => item.name === productName);
+
+    // a similar implementation of this is using for each loop
+    addToCart(productId);
+    updateCartQuantity();
+  })
+})
+
