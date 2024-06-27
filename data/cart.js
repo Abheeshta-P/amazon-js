@@ -40,5 +40,4 @@ export function removeFromCart(productId){
    })
    //change the cart
    cart=newCart;
-   console.log(cart)
 }
