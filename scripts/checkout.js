@@ -1,4 +1,4 @@
-import {cart,removeFromCart} from '../data//cart.js'
+import {calculateCartQuantity, cart,removeFromCart} from '../data//cart.js'
 import {products} from '../data/products.js'
 import { formatCurrency } from './utils/money.js';
 
@@ -107,5 +107,14 @@ document.querySelectorAll('.js-delete-quantity-link').forEach((link) => {
    //every element that we get from the dom has remove assosiated with it
    const containerRemove=document.querySelector(`.js-cart-item-container-${productId}`)
    containerRemove.remove();
+   updateCheckOutHeader();
   });
 });
+
+//update checkout header
+export function updateCheckOutHeader(){
+  const checkOutHeader=document.querySelector('.js-quantity-checkout');
+  let quantity=calculateCartQuantity();
+  checkOutHeader.textContent=`${quantity}`;
+}
+updateCheckOutHeader();

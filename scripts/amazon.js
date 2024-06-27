@@ -2,7 +2,7 @@
 //for modules we need to use a server
 //import cart from '../data/cart.js' --> if we use default export
 
-import {cart,addToCart} from '../data/cart.js'
+import {addToCart, calculateCartQuantity} from '../data/cart.js'
 import {products} from '../data/products.js'
 import { formatCurrency } from './utils/money.js';
 //import * as cartModule fom '../data/cart.js';
@@ -68,11 +68,8 @@ document.querySelector('.js-products-grid').innerHTML=productHTML;
 // ************ To made cart interactive ***********
 
 //update cart quantity in image
-export function updateCartQuantity(){
-  let quantity=0;
-  cart.forEach((cartItem)=>{
-    quantity+=cartItem.quantity;
-  })
+function updateCartQuantity(){
+  let quantity=calculateCartQuantity();
   document.querySelector('.js-cart-quantity').innerHTML=quantity;
 }
 
