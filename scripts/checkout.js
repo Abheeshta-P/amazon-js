@@ -1,6 +1,7 @@
-import {cart} from '../data//cart.js'
+import {cart,removeFromCart} from '../data//cart.js'
 import {products} from '../data/products.js'
 import { formatCurrency } from './utils/money.js';
+
 
 let cartHTML='';
 let checkOutContainer=document.querySelector('.order-summary');
@@ -13,7 +14,8 @@ cart.forEach((cartItem)=>{
     if(product.id==productId)
       matchingProduct=product;
   })
-  cartHTML+=`<div class="cart-item-container">
+  cartHTML+=`<div class="cart-item-container 
+  js-cart-item-container-${matchingProduct.id}">
             <div class="delivery-date">
               Delivery date: Tuesday, June 21
             </div>
@@ -36,7 +38,7 @@ cart.forEach((cartItem)=>{
                   <span class="update-quantity-link link-primary">
                     Update
                   </span>
-                  <span class="delete-quantity-link link-primary">
+                  <span class="delete-quantity-link link-primary js-delete-quantity-link "data-product-id=${matchingProduct.id}>
                     Delete
                   </span>
                 </div>
@@ -92,3 +94,16 @@ cart.forEach((cartItem)=>{
 
 //put items to page
 checkOutContainer.innerHTML=cartHTML;
+
+// Select all elements with the class 'js-delete-quantity-link' and add an event listener to each one
+document.querySelectorAll('.js-delete-quantity-link').forEach((link) => {
+  // For each link, add a 'click' event listener
+  link.addEventListener('click', () => {
+    // Code to execute when the link is clicked goes here
+    const productId=link.dataset.productId;
+
+    //to remove that product from cart
+    removeFromCart(productId);
+    //to update cart quuantity
+  });
+});

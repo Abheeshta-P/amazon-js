@@ -1,5 +1,5 @@
 // export default cart;
-export const cart=[{
+export let cart=[{
   productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
   quantity:2
 },{
@@ -26,4 +26,19 @@ export function addToCart(productId){
        productId,//destructuring property
        quantity
      });
+}
+
+//remove from cart
+export function removeFromCart(productId){
+  const newCart=[];
+  
+   //create new cart except the element for whic delete is clicked
+   cart.forEach((cartItem)=>{
+    if(cartItem.productId!==productId)
+      newCart.push(cartItem)
+      //newCart.push({productId:cartItem.productId,quantity:cartItem.quantity})
+   })
+   //change the cart
+   cart=newCart;
+   console.log(cart)
 }

@@ -10,6 +10,7 @@ import { formatCurrency } from './utils/money.js';
 
 let productHTML=``;
 products.forEach((product)=>{
+  updateCartQuantity()
        productHTML+=
         ` <div class="product-container">
           <div class="product-image-container">
@@ -67,7 +68,7 @@ document.querySelector('.js-products-grid').innerHTML=productHTML;
 // ************ To made cart interactive ***********
 
 //update cart quantity in image
-function updateCartQuantity(){
+export function updateCartQuantity(){
   let quantity=0;
   cart.forEach((cartItem)=>{
     quantity+=cartItem.quantity;
