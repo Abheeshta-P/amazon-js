@@ -1,4 +1,4 @@
-import {calculateCartQuantity, cart,removeFromCart} from '../data//cart.js'
+import {calculateCartQuantity, cart,removeFromCart, updateCart} from '../data//cart.js'
 import {products} from '../data/products.js'
 import { formatCurrency } from './utils/money.js';
 
@@ -35,8 +35,12 @@ cart.forEach((cartItem)=>{
                   <span>
                     Quantity: <span class="quantity-label">${cartItem.quantity}</span>
                   </span>
-                  <span class="update-quantity-link link-primary">
+                  <span class="update-quantity-link link-primary js-update-quantity-link"data-product-id=${matchingProduct.id}>
                     Update
+                  </span>
+                  <input class="quantity-input"data-product-id=${matchingProduct.id}></input>
+                  <span class="save-quantity-link link-primary"data-product-id=${matchingProduct.id} >
+                    Save
                   </span>
                   <span class="delete-quantity-link link-primary js-delete-quantity-link "data-product-id=${matchingProduct.id}>
                     Delete
@@ -95,6 +99,49 @@ cart.forEach((cartItem)=>{
 //put items to page
 checkOutContainer.innerHTML=cartHTML;
 
+// UPDATE quantity related function
+function updateUIValue(productId){
+  //add start and input for that element
+  const container=document.querySelector(`.js-cart-item-container-${productId} `)
+  container.querySelector('.js-update-quantity-link').classList.remove('is-updating-quantity')
+  container.querySelector('.quantity-label').classList.remove('is-updating-quantity')
+  container.querySelector('.quantity-input').classList.remove('is-editing-quantity')
+  container.querySelector('.save-quantity-link').classList.remove('is-editing-quantity')
+
+  const newQuantity=Number(container.querySelector('.quantity-input').value);
+
+  //edge condition
+  if(newQuantity<=0 || newQuantity>=1000){
+    alert('Quantity must be at least 0 and less than 1000');
+    return;
+  }
+  container.querySelector('.quantity-label').textContent=newQuantity;
+
+  //update that elements's product quantity
+  updateCart(productId,newQuantity);
+
+  //update the header
+  updateCheckOutHeader();
+}
+
+//update checkout header
+export function updateCheckOutHeader(){
+  const checkOutHeader=document.querySelector('.js-quantity-checkout');
+  let quantity=calculateCartQuantity();
+  checkOutHeader.textContent=`${quantity}`;
+}
+updateCheckOutHeader()
+
+function handleKeyDown(event) {
+  if (event.key === 'Enter') {
+    const productId = event.target.dataset.productId;
+    updateUIValue(productId);
+  }
+}
+
+
+
+//*********** Event listners **************
 // Select all elements with the class 'js-delete-quantity-link' and add an event listener to each one
 document.querySelectorAll('.js-delete-quantity-link').forEach((link) => {
   // For each link, add a 'click' event listener
@@ -111,10 +158,35 @@ document.querySelectorAll('.js-delete-quantity-link').forEach((link) => {
   });
 });
 
-//update checkout header
-export function updateCheckOutHeader(){
-  const checkOutHeader=document.querySelector('.js-quantity-checkout');
-  let quantity=calculateCartQuantity();
-  checkOutHeader.textContent=`${quantity}`;
-}
-updateCheckOutHeader();
+//Select all the elements with the class js-update-quantity-link and add eventlistner
+document.querySelectorAll('.js-update-quantity-link')
+.forEach((link)=>{
+  link.addEventListener(('click'),()=>{
+    //Get the product id of that link
+    const productId=link.dataset.productId;
+
+    //add start and input for that element
+    const container=document.querySelector(`.js-cart-item-container-${productId} `)
+    container.querySelector('.save-quantity-link').classList.add('is-editing-quantity')
+    container.querySelector('.quantity-input').classList.add('is-editing-quantity')
+    container.querySelector('.quantity-label').classList.add('is-updating-quantity')
+    link.classList.add('is-updating-quantity')
+})
+})
+
+
+document.querySelectorAll('.quantity-input').forEach((input) => {
+  input.addEventListener('keydown', handleKeyDown);
+});
+
+//Select all the elements with the class save-quantity-link and add eventlistner
+document.querySelectorAll('.save-quantity-link')
+.forEach((link)=>{
+  link.addEventListener(('click'),()=>{
+    //Get the product id of that link
+    const productId=link.dataset.productId;
+    //Updattion of Ui and the value
+    updateUIValue(productId);
+})
+})
+

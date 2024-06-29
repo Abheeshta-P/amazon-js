@@ -44,10 +44,10 @@ export function addToCart(productId){
     }
     
     //remove from cart
-    export function removeFromCart(productId){
+export function removeFromCart(productId){
       const newCart=[];
       
-      //create new cart except the element for whic delete is clicked
+      //create new cart except the element for which delete is clicked
       cart.forEach((cartItem)=>{
         if(cartItem.productId!==productId)
           newCart.push(cartItem)
@@ -56,6 +56,17 @@ export function addToCart(productId){
       //change the cart
       cart=newCart;
       saveToLocalStorage();
+}
+
+//update cart
+export function updateCart(productId,quantity){  
+  //update the quantity of that item
+  cart.forEach((cartItem)=>{
+    if(cartItem.productId==productId){
+       cartItem.quantity=quantity;
+      }
+    })
+  saveToLocalStorage();
 }
 
 export function calculateCartQuantity(){
