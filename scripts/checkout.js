@@ -1,6 +1,9 @@
 import {calculateCartQuantity, cart,removeFromCart, updateCart} from '../data//cart.js'
-import {products} from '../data/products.js'
+import {products} from '../data/products.js'//named exports
 import { formatCurrency } from './utils/money.js';
+//Esm ecma script module to load external library : Default export with only one function
+import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js'
+import { deliveryOptions } from '../data/deliveryOptions.js';
 
 
 let cartHTML='';
@@ -14,10 +17,21 @@ cart.forEach((cartItem)=>{
     if(product.id==productId)
       matchingProduct=product;
   })
+
+  const selectedOption=cartItem.deliveryOptionId;
+  let deliveryOffset;
+  //connection between cart data and the deliveryOptions is deliveryOptionId
+  deliveryOptions.forEach((option)=>{
+    if(selectedOption===option.id){
+      deliveryOffset=option.deliveryDays;
+    }
+  })
+  let deliverDate=dayCalculator(deliveryOffset);
+
   cartHTML+=`<div class="cart-item-container 
   js-cart-item-container-${matchingProduct.id}">
             <div class="delivery-date">
-              Delivery date: Tuesday, June 21
+              Delivery date: ${deliverDate}
             </div>
 
             <div class="cart-item-details-grid">
@@ -52,45 +66,7 @@ cart.forEach((cartItem)=>{
                 <div class="delivery-options-title">
                   Choose a delivery option:
                 </div>
-                <div class="delivery-option">
-                  <input type="radio" checked
-                    class="delivery-option-input"
-                    name="delivery-option-${matchingProduct.id}">
-                  <div>
-                    <div class="delivery-option-date">
-                      Tuesday, June 21
-                    </div>
-                    <div class="delivery-option-price">
-                      FREE Shipping
-                    </div>
-                  </div>
-                </div>
-                <div class="delivery-option">
-                  <input type="radio"
-                    class="delivery-option-input"
-                    name="delivery-option-${matchingProduct.id}">
-                  <div>
-                    <div class="delivery-option-date">
-                      Wednesday, June 15
-                    </div>
-                    <div class="delivery-option-price">
-                      $4.99 - Shipping
-                    </div>
-                  </div>
-                </div>
-                <div class="delivery-option">
-                  <input type="radio"
-                    class="delivery-option-input"
-                    name="delivery-option-${matchingProduct.id}">
-                  <div>
-                    <div class="delivery-option-date">
-                      Monday, June 13
-                    </div>
-                    <div class="delivery-option-price">
-                      $9.99 - Shipping
-                    </div>
-                  </div>
-                </div>
+                ${deliveryOptionsHTML(matchingProduct,cartItem)}
               </div>
             </div>
           </div>`
@@ -139,6 +115,43 @@ function handleKeyDown(event) {
   }
 }
 
+//DELIVERY OPTION related functions
+
+// Day JS : Library (Code wrote by other devs)
+//Create a date to deliver and format accordingly
+
+function dayCalculator(deliveryDays){
+  const today=dayjs()
+  const deliveryDay=today.add(deliveryDays, 'days')
+  console.log(deliveryDay.format('dddd, MMMM D'))
+  return deliveryDay.format('dddd, MMMM D')
+}
+
+function deliveryOptionsHTML(matchingProduct,cartItem){
+  let deliveryHTML='';
+  deliveryOptions.forEach((deliveryOption)=>{
+    const formatedDeliveryDate=dayCalculator(deliveryOption.deliveryDays);
+    const priceString=deliveryOption.priceCents===0?'FREE':`$${formatCurrency(deliveryOption.priceCents)} - `
+    const isChecked=deliveryOption.id===cartItem.deliveryOptionId?'checked':'';
+
+    deliveryHTML+=
+    `
+              <div class="delivery-option">
+                  <input type="radio" ${isChecked}
+                    class="delivery-option-input"
+                    name="delivery-option-${matchingProduct.id}">
+                  <div>
+                    <div class="delivery-option-date">
+                      ${formatedDeliveryDate}
+                    </div>
+                    <div class="delivery-option-price">
+                      ${priceString} Shipping
+                    </div>
+                  </div>
+                </div>`
+  })
+  return deliveryHTML;
+}
 
 
 //*********** Event listners **************
@@ -190,9 +203,3 @@ document.querySelectorAll('.save-quantity-link')
 })
 })
 
-// Day JS : Library (Code wrote by other devs)
-
-//Create a date to deliver and format accordingly
-const today=dayjs()
-const deliveryDay=today.add(7, 'days')
-console.log(deliveryDay.format('dddd, MMMM D')) 
