@@ -5,7 +5,7 @@ import { formatCurrency } from './utils/money.js';
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js'
 import { deliveryOptions } from '../data/deliveryOptions.js';
 
-
+function renderOrderSummary(){
 let cartHTML='';
 let checkOutContainer=document.querySelector('.order-summary');
 
@@ -98,13 +98,6 @@ function updateUIValue(productId){
 
   //update the header
   updateCheckOutHeader();
-}
-
-//update checkout header
-export function updateCheckOutHeader(){
-  const checkOutHeader=document.querySelector('.js-quantity-checkout');
-  let quantity=calculateCartQuantity();
-  checkOutHeader.textContent=`${quantity}`;
 }
 updateCheckOutHeader()
 
@@ -213,5 +206,16 @@ document.querySelectorAll('.js-delivery-option')
       //gets product id from the product to which the option belongs(in html element creation from cart item it gets the additional info about products from product dataset by matching the product id that matched element's product id is passed here)
       const {deliveryOptionId,productId}=option.dataset;
       updateDeliveryOption(deliveryOptionId,productId)
+      renderOrderSummary();
     })
   })
+}
+renderOrderSummary();
+
+//since exporting cannot be done inside function
+//update checkout header
+export function updateCheckOutHeader(){
+  const checkOutHeader=document.querySelector('.js-quantity-checkout');
+  let quantity=calculateCartQuantity();
+  checkOutHeader.textContent=`${quantity}`;
+}
