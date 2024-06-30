@@ -81,3 +81,12 @@ export function calculateCartQuantity(){
     quantity=''
   return quantity;
 }
+
+//update delivery option
+export function updateDeliveryOption(newOptionId,productId){
+  cart.forEach((cartItem)=>{
+    if(cartItem.productId==productId)
+      cartItem.deliveryOptionId=newOptionId;
+  })
+  saveToLocalStorage();
+}

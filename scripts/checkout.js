@@ -1,4 +1,4 @@
-import {calculateCartQuantity, cart,removeFromCart, updateCart} from '../data//cart.js'
+import {calculateCartQuantity, cart,removeFromCart, updateCart, updateDeliveryOption} from '../data//cart.js'
 import {products} from '../data/products.js'//named exports
 import { formatCurrency } from './utils/money.js';
 //Esm ecma script module to load external library : Default export with only one function
@@ -136,7 +136,9 @@ function deliveryOptionsHTML(matchingProduct,cartItem){
 
     deliveryHTML+=
     `
-              <div class="delivery-option">
+              <div class="delivery-option js-delivery-option"
+              data-product-id=${matchingProduct.id}
+              data-delivery-option-id=${deliveryOption.id}>
                   <input type="radio" ${isChecked}
                     class="delivery-option-input"
                     name="delivery-option-${matchingProduct.id}">
@@ -203,3 +205,13 @@ document.querySelectorAll('.save-quantity-link')
 })
 })
 
+//add event listeners to all the option 
+document.querySelectorAll('.js-delivery-option')
+  .forEach((option)=>{
+    option.addEventListener('click',()=>{
+      //gets delivery option id from the div of that option dataset variable
+      //gets product id from the product to which the option belongs(in html element creation from cart item it gets the additional info about products from product dataset by matching the product id that matched element's product id is passed here)
+      const {deliveryOptionId,productId}=option.dataset;
+      updateDeliveryOption(deliveryOptionId,productId)
+    })
+  })
