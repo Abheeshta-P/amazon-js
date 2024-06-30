@@ -6,9 +6,6 @@ import { formatCurrency } from './utils/money.js';
 let cartHTML='';
 let checkOutContainer=document.querySelector('.order-summary');
 
-//run day js
-console.log(dayjs())
-
 //to generate dynamic products
 cart.forEach((cartItem)=>{
   const productId=cartItem.productId;
@@ -193,3 +190,9 @@ document.querySelectorAll('.save-quantity-link')
 })
 })
 
+// Day JS : Library (Code wrote by other devs)
+
+//Create a date to deliver and format accordingly
+const today=dayjs()
+const deliveryDay=today.add(7, 'days')
+console.log(deliveryDay.format('dddd, MMMM D')) 
