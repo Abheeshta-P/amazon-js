@@ -6,6 +6,9 @@ import { formatCurrency } from './utils/money.js';
 let cartHTML='';
 let checkOutContainer=document.querySelector('.order-summary');
 
+//run day js
+console.log(dayjs())
+
 //to generate dynamic products
 cart.forEach((cartItem)=>{
   const productId=cartItem.productId;
@@ -68,7 +71,7 @@ cart.forEach((cartItem)=>{
                 <div class="delivery-option">
                   <input type="radio"
                     class="delivery-option-input"
-                    name="${matchingProduct.id}">
+                    name="delivery-option-${matchingProduct.id}">
                   <div>
                     <div class="delivery-option-date">
                       Wednesday, June 15
@@ -81,7 +84,7 @@ cart.forEach((cartItem)=>{
                 <div class="delivery-option">
                   <input type="radio"
                     class="delivery-option-input"
-                    name="${matchingProduct.id}>
+                    name="delivery-option-${matchingProduct.id}">
                   <div>
                     <div class="delivery-option-date">
                       Monday, June 13
