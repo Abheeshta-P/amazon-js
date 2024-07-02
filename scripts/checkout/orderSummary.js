@@ -3,11 +3,12 @@ import {getProductId, products} from '../../data/products.js'//named exports
 import { formatCurrency } from '../utils/money.js';
 //Esm ecma script module to load external library : Default export with only one function
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js'
-import { deliveryOptions } from '../../data/deliveryOptions.js';
+import { deliveryOptions, getDeliveryOptionId } from '../../data/deliveryOptions.js';
+import { renderPaymentSummary } from './paymentSummary.js';
 
 export function renderOrderSummary(){
 let cartHTML='';
-let checkOutContainer=document.querySelector('.order-summary');
+let checkOutContainer=document.querySelector('.js-order-summary');
 
 //to generate dynamic products
 cart.forEach((cartItem)=>{
@@ -15,14 +16,10 @@ cart.forEach((cartItem)=>{
   //get matching product id
   const matchingProduct=getProductId(productId);
   const selectedOption=cartItem.deliveryOptionId;
-  let deliveryOffset;
   //connection between cart data and the deliveryOptions is deliveryOptionId
-  deliveryOptions.forEach((option)=>{
-    if(selectedOption===option.id){
-      deliveryOffset=option.deliveryDays;
-    }
-  })
-  let deliverDate=dayCalculator(deliveryOffset);
+  const deliveryOption=getDeliveryOptionId(selectedOption);
+ 
+  let deliverDate=dayCalculator(deliveryOption.deliveryDays);
 
   cartHTML+=`<div class="cart-item-container 
   js-cart-item-container-${matchingProduct.id}">
@@ -94,6 +91,9 @@ function updateUIValue(productId){
 
   //update the header
   updateCheckOutHeader();
+  //to change the html while updating
+  renderOrderSummary();
+  renderPaymentSummary();
 }
 updateCheckOutHeader()
 
@@ -202,6 +202,7 @@ document.querySelectorAll('.js-delivery-option')
       const {deliveryOptionId,productId}=option.dataset;
       updateDeliveryOption(deliveryOptionId,productId)
       renderOrderSummary();
+      renderPaymentSummary();
     })
   })
 }

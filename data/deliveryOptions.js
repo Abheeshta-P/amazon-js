@@ -15,3 +15,14 @@ export const deliveryOptions=[{
   deliveryDays:1,
   priceCents:999
 }]
+
+export function getDeliveryOptionId(selectedOption){
+  let deliveryOption;
+  //connection between cart data and the deliveryOptions is deliveryOptionId
+  deliveryOptions.forEach((option)=>{
+    if(selectedOption===option.id){
+      deliveryOption=option;
+    }
+  })
+  return deliveryOption||deliveryOptions[0];//deaflt if we wont find
+}
