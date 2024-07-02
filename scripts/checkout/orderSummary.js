@@ -1,5 +1,5 @@
 import {calculateCartQuantity, cart,removeFromCart, updateCart, updateDeliveryOption} from '../../data/cart.js'
-import {products} from '../../data/products.js'//named exports
+import {getProductId, products} from '../../data/products.js'//named exports
 import { formatCurrency } from '../utils/money.js';
 //Esm ecma script module to load external library : Default export with only one function
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js'
@@ -12,12 +12,8 @@ let checkOutContainer=document.querySelector('.order-summary');
 //to generate dynamic products
 cart.forEach((cartItem)=>{
   const productId=cartItem.productId;
-  let matchingProduct;
-  products.forEach((product)=>{
-    if(product.id==productId)
-      matchingProduct=product;
-  })
-
+  //get matching product id
+  const matchingProduct=getProductId(productId);
   const selectedOption=cartItem.deliveryOptionId;
   let deliveryOffset;
   //connection between cart data and the deliveryOptions is deliveryOptionId
