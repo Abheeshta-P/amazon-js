@@ -158,6 +158,7 @@ document.querySelectorAll('.js-delete-quantity-link').forEach((link) => {
    const containerRemove=document.querySelector(`.js-cart-item-container-${productId}`)
    containerRemove.remove();
    updateCheckOutHeader();
+   renderPaymentSummary();
   });
 });
 
