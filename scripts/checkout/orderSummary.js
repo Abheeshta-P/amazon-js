@@ -7,7 +7,7 @@ import { updateCheckOutHeader } from './checkoutHeader.js';
 export function renderOrderSummary(){
 let cartHTML='';
 let checkOutContainer=document.querySelector('.js-order-summary');
-console.log("loaded")
+
 //to generate dynamic products
 cart.forEach((cartItem)=>{
   const productId=cartItem.productId;
