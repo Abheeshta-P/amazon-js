@@ -1,6 +1,9 @@
 //Uses normalization of data to avoid redundancy of option choosen
 // full dependncy on deliveryOptionId in second normal form
 
+//Esm ecma script module to load external library : Default export with only one function
+import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js'
+
 export const deliveryOptions=[{
   id:'1',
   deliveryDays:7,
@@ -25,4 +28,25 @@ export function getDeliveryOptionId(selectedOption){
     }
   })
   return deliveryOption||deliveryOptions[0];//deaflt if we wont find
+}
+
+// Day JS : Library (Code wrote by other devs)
+//Create a date to deliver and format accordingly
+
+// Function to calculate delivery day, skipping weekends
+export function dayCalculator(deliveryDays) {
+  const today = dayjs();
+  let deliveryDay = today.add(deliveryDays, 'day');
+  deliveryDay = isWeekend(deliveryDay);
+  return deliveryDay.format('dddd, MMMM D');
+}
+
+// Function to adjust the delivery day if it falls on a weekend
+function isWeekend(deliveryDay) {
+  let deliveryFormat = deliveryDay.format('dddd');
+  while (deliveryFormat === 'Saturday' || deliveryFormat === 'Sunday') {
+    deliveryDay = deliveryDay.add(1, 'day');
+    deliveryFormat = deliveryDay.format('dddd');
+  }
+  return deliveryDay;
 }

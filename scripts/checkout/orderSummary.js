@@ -1,15 +1,13 @@
-import {calculateCartQuantity, cart,removeFromCart, updateCart, updateDeliveryOption} from '../../data/cart.js'
+import {cart,removeFromCart, updateCart, updateDeliveryOption} from '../../data/cart.js'
 import {getProductId, products} from '../../data/products.js'//named exports
 import { formatCurrency } from '../utils/money.js';
-//Esm ecma script module to load external library : Default export with only one function
-import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js'
-import { deliveryOptions, getDeliveryOptionId } from '../../data/deliveryOptions.js';
+import { deliveryOptions, getDeliveryOptionId,dayCalculator} from '../../data/deliveryOptions.js';
 import { renderPaymentSummary } from './paymentSummary.js';
-
+import { updateCheckOutHeader } from './checkoutHeader.js';
 export function renderOrderSummary(){
 let cartHTML='';
 let checkOutContainer=document.querySelector('.js-order-summary');
-
+console.log("loaded")
 //to generate dynamic products
 cart.forEach((cartItem)=>{
   const productId=cartItem.productId;
@@ -70,13 +68,13 @@ checkOutContainer.innerHTML=cartHTML;
 
 // UPDATE quantity related function
 function updateUIValue(productId){
-  //add start and input for that element
+//add start and input for that element
   const container=document.querySelector(`.js-cart-item-container-${productId} `)
-  container.querySelector('.js-update-quantity-link').classList.remove('is-updating-quantity')
+/*  container.querySelector('.js-update-quantity-link').classList.remove('is-updating-quantity')
   container.querySelector('.quantity-label').classList.remove('is-updating-quantity')
   container.querySelector('.quantity-input').classList.remove('is-editing-quantity')
   container.querySelector('.save-quantity-link').classList.remove('is-editing-quantity')
-
+*/
   const newQuantity=Number(container.querySelector('.quantity-input').value);
 
   //edge condition
@@ -90,10 +88,8 @@ function updateUIValue(productId){
   updateCart(productId,newQuantity);
 
   //update the header
-  updateCheckOutHeader();
   //to change the html while updating
-  renderOrderSummary();
-  renderPaymentSummary();
+   mvc();
 }
 updateCheckOutHeader()
 
@@ -105,15 +101,6 @@ function handleKeyDown(event) {
 }
 
 //DELIVERY OPTION related functions
-
-// Day JS : Library (Code wrote by other devs)
-//Create a date to deliver and format accordingly
-
-function dayCalculator(deliveryDays){
-  const today=dayjs()
-  const deliveryDay=today.add(deliveryDays, 'days')
-  return deliveryDay.format('dddd, MMMM D')
-}
 
 function deliveryOptionsHTML(matchingProduct,cartItem){
   let deliveryHTML='';
@@ -154,11 +141,10 @@ document.querySelectorAll('.js-delete-quantity-link').forEach((link) => {
 
     //to remove that product from cart
     removeFromCart(productId);
-   //every element that we get from the dom has remove assosiated with it
-   const containerRemove=document.querySelector(`.js-cart-item-container-${productId}`)
-   containerRemove.remove();
-   updateCheckOutHeader();
-   renderPaymentSummary();
+    //every element that we get from the dom has remove assosiated with it
+    //const containerRemove=document.querySelector(`.js-cart-item-container-${productId}`)
+    //  containerRemove.remove();
+ mvc();
   });
 });
 
@@ -190,7 +176,7 @@ document.querySelectorAll('.save-quantity-link')
     //Get the product id of that link
     const productId=link.dataset.productId;
     //Updattion of Ui and the value
-    updateUIValue(productId);
+   updateUIValue(productId)
 })
 })
 
@@ -208,10 +194,10 @@ document.querySelectorAll('.js-delivery-option')
   })
 }
 
-//since exporting cannot be done inside function
-//update checkout header
-export function updateCheckOutHeader(){
-  const checkOutHeader=document.querySelector('.js-quantity-checkout');
-  let quantity=calculateCartQuantity();
-  checkOutHeader.textContent=`${quantity}`;
+  //update the header
+  //to change the html while updating
+function mvc(){
+  renderOrderSummary();
+  updateCheckOutHeader();
+  renderPaymentSummary();
 }
