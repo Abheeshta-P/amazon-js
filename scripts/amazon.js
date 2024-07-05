@@ -97,9 +97,12 @@ document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
 
     // Check if the product already exists in the cart by inbuilt find which returns that item if it is found else undifined
     //const productInCart = cart.find(item => item.name === productName);
-
+//to identify which value was selected in select 
+const selectElement=document.querySelector(`.js-quantity-selector-${productId}`);
+//gives string value by default in DOM  , while adding it concatenates so
+const quantity = parseInt(selectElement.value); //or use Number()
     // a similar implementation of this is using for each loop
-    addToCart(productId);
+    addToCart(productId,quantity);
     updateCartQuantity();
   })
 })
