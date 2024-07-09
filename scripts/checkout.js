@@ -1,6 +1,6 @@
 import { renderOrderSummary } from "./checkout/orderSummary.js";
 import { renderPaymentSummary } from "./checkout/paymentSummary.js";
-
+import "../data/cartoop.js"
 /*
 
 model view control : MVC (Design pattern) => These run in loop
