@@ -29,7 +29,7 @@ function saveToLocalStorage(){
    localStorage.setItem('cart',JSON.stringify(cart)) 
 }
 //add to cart
-export function addToCart(productId,quantity){
+export function addToCart(productId,quantity=1){
 
  let matchingItem;//undifined is not found
    cart.forEach((cartItem)=>{
