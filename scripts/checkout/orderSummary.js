@@ -79,7 +79,7 @@ function updateUIValue(productId){
 
   //edge condition
   if(newQuantity<=0 || newQuantity>=1000){
-    alert('Quantity must be at least 0 and less than 1000');
+    alert('Quantity must be at least 1 and less than 1000');
     mvc();
     return;
   }
