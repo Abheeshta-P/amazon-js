@@ -1,11 +1,20 @@
 class Cart {
   //properties
   cartItems=undefined;
-  localStorageName=undefined;
+  //localStorage should not be visible so should be private use #
+  #localStorageName=undefined;
+
+  //executed for everyy instance creeated of cart
+  constructor(localStorageName){
+    this.#localStorageName=localStorageName
+    this.#loadFromStorage()
+  }
 
   //methods
-    loadFromStorage(){
-      this.cartItems=JSON.parse(localStorage.getItem(this.localStorageName))
+
+  //local storage should be private
+   #loadFromStorage(){
+      this.cartItems=JSON.parse(localStorage.getItem(this.#localStorageName))
       if(!this.cartItems){
         this.cartItems=[{
           productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
@@ -21,7 +30,7 @@ class Cart {
     }
     saveToLocalStorage(){
       //adding to local storage
-      localStorage.setItem(this.localStorageName,JSON.stringify(this.cartItems)) 
+      localStorage.setItem(this.#localStorageName,JSON.stringify(this.cartItems)) 
    }
    addToCart(productId,quantity=1){
     let matchingItem;//undifined is not found
@@ -81,10 +90,6 @@ class Cart {
   }
   
   const cart=new Cart();
-  cart.localStorageName='cart-oop'
-  cart.loadFromStorage()
-const buisnessCart=new Cart();
-buisnessCart.localStorageName='cart-buisness'
-buisnessCart.loadFromStorage();
+  const buisnessCart=new Cart();
 console.log(cart)
 console.log(buisnessCart)
