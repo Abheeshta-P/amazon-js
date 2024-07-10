@@ -7,6 +7,31 @@ export function getProductId(productId){
   return matchingProduct;
 }
 
+class Product{
+  id;
+  image;
+  name;
+  rating;
+  // stars;
+  // count;
+  priceCents;
+  keywords;
+  //product details refers to each object
+  constructor(productDetails){
+    this.id=productDetails.id;
+    this.image=productDetails.image;
+    this.name=productDetails.name;
+    this.rating=productDetails.rating;
+    // this.stars=productDetails.rating.stars;
+    // this.count=productDetails.rating.count;
+    this.priceCents=productDetails.priceCents;
+    this.keywords=productDetails.keywords;
+  }
+}
+
+
+//object to class instances
+
 export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
@@ -666,4 +691,7 @@ export const products = [
       "mens"
     ]
   }
-];
+].map((productDetails)=>{
+  return new Product(productDetails) //creates new array of instances of class Product
+})
+console.log(products)

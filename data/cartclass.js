@@ -4,7 +4,7 @@ class Cart {
   //localStorage should not be visible so should be private use #
   #localStorageName=undefined;
 
-  //executed for everyy instance creeated of cart
+  //executed for everyy instance created of cart
   constructor(localStorageName){
     this.#localStorageName=localStorageName
     this.#loadFromStorage()
