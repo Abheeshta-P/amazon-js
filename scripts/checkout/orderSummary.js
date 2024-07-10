@@ -1,7 +1,5 @@
 import {cart,removeFromCart, updateCart, updateDeliveryOption} from '../../data/cart.js'
 import {getProductId, products} from '../../data/products.js'//named exports
-
-import { formatCurrency } from '../utils/money.js';
 import { deliveryOptions, getDeliveryOptionId,dayCalculator} from '../../data/deliveryOptions.js';
 import { renderPaymentSummary } from './paymentSummary.js';
 import { updateCheckOutHeader } from './checkoutHeader.js';
@@ -35,7 +33,7 @@ cart.forEach((cartItem)=>{
                 ${matchingProduct.name}
                 </div>
                 <div class="product-price">
-                  $${formatCurrency(matchingProduct.priceCents)}
+                  ${matchingProduct.productsFormatedPrice()}
                 </div>
                 <div class="product-quantity">
                   <span>
@@ -108,7 +106,7 @@ function deliveryOptionsHTML(matchingProduct,cartItem){
   let deliveryHTML='';
   deliveryOptions.forEach((deliveryOption)=>{
     const formatedDeliveryDate=dayCalculator(deliveryOption.deliveryDays);
-    const priceString=deliveryOption.priceCents===0?'FREE':`$${formatCurrency(deliveryOption.priceCents)} - `
+    const priceString=deliveryOption.priceCents===0?'FREE':` ${matchingProduct.productsFormatedPrice()} - `
     const isChecked=deliveryOption.id===cartItem.deliveryOptionId?'checked':'';
 
     deliveryHTML+=
