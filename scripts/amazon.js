@@ -61,6 +61,7 @@ products.forEach((product)=>{
           </button>
         </div>`
         //used kaebab case data-product-id
+        //polymorphism : product.extraInfoHTTML() dont know which extraInfoHTTML will be called
 })
 
 document.querySelector('.js-products-grid').innerHTML=productHTML;
