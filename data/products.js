@@ -36,9 +36,25 @@ class Product{
   productsFormatedPrice(){
  return ` $${formatCurrency(this.priceCents)}`
   }
+
+  extraInfoHTTML(){
+    return ``;
+  }
 }
 
-
+class Clothing extends Product{
+  sizeChartLink;
+  constructor(productDetails){
+    //call super class constructor
+    super(productDetails)
+    this.sizeChartLink=productDetails.sizeChartLink;
+  }
+  //override the super extraInfoHTML
+  extraInfoHTTML(){
+    // super.extraInfoHTTML() --> call super class method
+    return `<a href="${this.sizeChartLink}" target="_blank" style="text-decoration:none;">Size chart</a>`
+  }
+}
 //object to class instances
 
 export const products = [
@@ -701,6 +717,8 @@ export const products = [
     ]
   }
 ].map((productDetails)=>{
+  if(productDetails.type==='clothing')
+    return new Clothing(productDetails)
   return new Product(productDetails) //creates new array of instances of class Product
 })
 console.log(products)

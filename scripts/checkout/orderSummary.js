@@ -1,5 +1,5 @@
 import {cart,removeFromCart, updateCart, updateDeliveryOption} from '../../data/cart.js'
-import {getProductId, products} from '../../data/products.js'//named exports
+import {getProductId} from '../../data/products.js'//named exports
 import { deliveryOptions, getDeliveryOptionId,dayCalculator} from '../../data/deliveryOptions.js';
 import { renderPaymentSummary } from './paymentSummary.js';
 import { updateCheckOutHeader } from './checkoutHeader.js';
