@@ -89,7 +89,7 @@ class Cart {
   }
   }
   
-  const cart=new Cart('cart-oop');
+  export const cart=new Cart('cart-oop');
   const buisnessCart=new Cart('cart-buisness');
 console.log(cart)
 console.log(buisnessCart)
