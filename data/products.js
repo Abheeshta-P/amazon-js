@@ -59,6 +59,11 @@ class Clothing extends Product{
 class Appliances extends Product{
   instructionsLink;
   warrantyLink;
+  constructor(productDetails){
+    super(productDetails)
+    this.instructionsLink=productDetails.instructionsLink
+    this.warrantyLink=productDetails.warrantyLink
+  }
   extraInfoHTTML(){
     return `<a href="${this.instructionsLink}" target="_blank" style="text-decoration:none;">Instructions</a>
     <br>
@@ -67,7 +72,7 @@ class Appliances extends Product{
 }
 //object to class instances
 
-export const products = [
+/*export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
     image: "images/products/athletic-cotton-socks-6-pairs.jpg",
@@ -745,4 +750,42 @@ export const products = [
     return new Appliances(productDetails)
   return new Product(productDetails) //creates new array of instances of class Product
 })
-console.log(products)
+
+*/
+
+//backend
+export let products=[];
+export function loadProducts(functionRenderProducts){
+ const xhr= new XMLHttpRequest()
+ xhr.addEventListener('load',()=>{
+   //json to object 
+  products=JSON.parse(xhr.response)
+   console.log("Loaded product successfully")
+
+   //change the products array to add some more key value
+   //can use map but here no need of new array so use foreach
+  products.forEach(product=>{
+    if(product.keywords.includes('appliances')){
+      product.type='appliance'
+      product.instructionsLink="/images/appliance-instructions.png";
+      product.warrantyLink="/images/appliance-warranty.png";
+    }
+   })
+
+   //convert to class object
+  products= products.map((productDetails)=>{
+    if(productDetails.type==='clothing')
+      return new Clothing(productDetails)
+    else if(productDetails.type==='appliance')
+      return new Appliances(productDetails)
+    return new Product(productDetails) //creates new array of instances of class Product
+  })
+
+  //render the grid
+  functionRenderProducts()
+  console.log(products)
+ })
+ xhr.open("GET",'https://supersimplebackend.dev/products')
+ xhr.send()
+}
+// loadProducts()
