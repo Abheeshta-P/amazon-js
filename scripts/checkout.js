@@ -12,7 +12,18 @@ Splits code into 3 parts
 3. Controller : run some code whhen we interact with the page (Event listeners)
 
 */
-loadProducts(()=>{
+
+new Promise((resolve,reject)=>{
+  loadProducts(()=>{
+    resolve("Resolved a promise")
+  })
+}).then(res=>{
+  console.log(res)
   renderOrderSummary()
   renderPaymentSummary()
 })
+
+// loadProducts(()=>{
+//   renderOrderSummary()
+//   renderPaymentSummary()
+// })
