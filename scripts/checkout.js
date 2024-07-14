@@ -1,4 +1,4 @@
-import { loadProducts } from "../data/products.js";
+import { fetchProducts } from "../data/products.js";
 import { renderOrderSummary } from "./checkout/orderSummary.js";
 import { renderPaymentSummary } from "./checkout/paymentSummary.js";
 // import "../data/cartoop.js"
@@ -13,12 +13,20 @@ Splits code into 3 parts
 
 */
 
+/*
 new Promise((resolve,reject)=>{
   loadProducts(()=>{
     resolve("Resolved a promise")
   })
 }).then(res=>{
   console.log(res)
+  renderOrderSummary()
+  renderPaymentSummary()
+})
+*/
+
+//fetch
+fetchProducts().then(()=>{
   renderOrderSummary()
   renderPaymentSummary()
 })

@@ -755,6 +755,36 @@ class Appliances extends Product{
 
 //backend
 export let products=[];
+export function fetchProducts(){
+  //return a promise so that after perfoming this we can add next steps
+  const promise=fetch('https://supersimplebackend.dev/products')//default get
+  .then(response=>{
+    if(response.ok)
+      return response.json()//promise
+    else
+    throw new Error("Failed to load products")
+  }).then(parsedProducts=>{
+    //change the products array to add some more key value
+    parsedProducts.forEach(product=>{
+      if(product.keywords.includes('appliances')){
+        product.type='appliance'
+        product.instructionsLink="/images/appliance-instructions.png";
+        product.warrantyLink="/images/appliance-warranty.png";
+      }
+     })
+  //convert to class object
+  products= parsedProducts.map((productDetails)=>{
+    if(productDetails.type==='clothing')
+      return new Clothing(productDetails)
+    else if(productDetails.type==='appliance')
+      return new Appliances(productDetails)
+    return new Product(productDetails) //creates new array of instances of class Product
+  })
+  })
+  return promise
+}
+
+/*
 export function loadProducts(functionRenderProducts){
  const xhr= new XMLHttpRequest()
  xhr.addEventListener('load',()=>{
@@ -783,9 +813,10 @@ export function loadProducts(functionRenderProducts){
 
   //render the grid
   functionRenderProducts()
-  console.log(products)
+  // console.log(products)
  })
  xhr.open("GET",'https://supersimplebackend.dev/products')
  xhr.send()
 }
+*/
 // loadProducts()

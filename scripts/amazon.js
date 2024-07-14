@@ -6,9 +6,12 @@
 //cartModule.cart also cartModule.addToCart('id')
 
 import {addToCart, calculateCartQuantity} from '../data/cart.js'
-import {products,loadProducts} from '../data/products.js'
+import {products, fetchProducts} from '../data/products.js'
 
-loadProducts(renderProductsGrids);//callback
+//loadProducts(renderProductsGrids);//callback
+fetchProducts().then(()=>{
+  renderProductsGrids()
+})
 
 //async request is sent takes time to get the products until then this hould not be rendered so
 function renderProductsGrids(){
