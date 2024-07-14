@@ -761,6 +761,8 @@ export function fetchProducts(){
   .then(response=>{
     if(response.ok)
       return response.json()//promise
+    else if(response.status>=400)//because fetch doent throw error for 400 errors
+      throw response;
     else
     throw new Error("Failed to load products")
   }).then(parsedProducts=>{
@@ -780,8 +782,10 @@ export function fetchProducts(){
       return new Appliances(productDetails)
     return new Product(productDetails) //creates new array of instances of class Product
   })
-  }).catch(err=>{
-    console.log("Unexpected error in promise"+err)
+  }).catch(response=>{
+    if(response.status===400)
+      console.log("Network error try again later")
+    console.log("Unexpected error in promise"+response)
   })
   return promise
 }
