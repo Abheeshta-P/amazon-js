@@ -53,7 +53,7 @@
 
     <div class="main">
       <div class="order-tracking">
-        <a class="back-to-orders-link link-primary" href="orders.html">
+        <a class="back-to-orders-link link-primary" href="orders.html?orderId=123&productId=456">
           View all orders
         </a>
 
@@ -88,5 +88,11 @@
         </div>
       </div>
     </div>
+    <script>
+      const url=new URL(window.location.href)
+      const orderID=url.searchParams.get('orderId')
+      const productID=url.searchParams.get('productId')
+      console.log(orderID)
+    </script>
   </body>
 </html>
