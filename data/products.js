@@ -780,12 +780,14 @@ export function fetchProducts(){
       return new Appliances(productDetails)
     return new Product(productDetails) //creates new array of instances of class Product
   })
+  }).catch(err=>{
+    console.log("Unexpected error in promise"+err)
   })
   return promise
 }
 
 /*
-export function loadProducts(functionRenderProducts){
+function loadProducts(functionRenderProducts){
  const xhr= new XMLHttpRequest()
  xhr.addEventListener('load',()=>{
    //json to object 
@@ -815,8 +817,14 @@ export function loadProducts(functionRenderProducts){
   functionRenderProducts()
   // console.log(products)
  })
+ //error handling
+ xhr.addEventListener('error',()=>{
+  console.log("There is an error in xhr!!")
+ })
  xhr.open("GET",'https://supersimplebackend.dev/products')
  xhr.send()
 }
+
+loadProducts()
+
 */
-// loadProducts()
