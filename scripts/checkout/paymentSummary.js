@@ -5,7 +5,6 @@ import { getProductId } from '../../data/products.js';
 import { formatCurrency } from '../utils/money.js';
 
 export function renderPaymentSummary(){
-  console.log(cart)
   //to calculate money of all product
   let productPriceCents=0;
   //to calculate shipping cost of all products

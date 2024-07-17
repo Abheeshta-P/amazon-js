@@ -1,9 +1,12 @@
+import { addToCart } from "../data/cart.js";
 import { orders, orderTimeCalculator } from "../data/orders.js";
 import { getProductId,fetchProducts} from "../data/products.js";
+import { updateCartQuantity } from "./utils/amazonHeaderUpdate.js";
 import { formatCurrency } from "./utils/money.js";
-fetchProducts().then(()=>generateOrderHTML())
+fetchProducts().then(()=>generateOrderHTML()).catch(err=>console.log("Error : "+err))
 
 function generateOrderHTML(){
+  updateCartQuantity();
   const orderGrid=document.querySelector('.js-orders-grid')
   // console.log(orders)
   orders.forEach(order => {
@@ -28,7 +31,7 @@ function generateOrderHTML(){
             </div>
           </div>
 
-          <div class="order-details-grid js-order-details-grid" data-orderId=${order.id}>
+          <div class="order-details-grid js-order-details-grid" data-order-id="${order.id}">
             
           </div>
         </div>
@@ -37,9 +40,8 @@ function generateOrderHTML(){
   })
 }
 function renderOrders(order){
-
-
-    let orderDetailsGrid=document.querySelector('.js-order-details-grid')
+  //select that div with of perticular order
+    let orderDetailsGrid=document.querySelector(`[data-order-id="${order.id}"]`)
     order.products.forEach((product)=>{
       const matchingProduct=getProductId(product.productId)
             orderDetailsGrid.innerHTML+=`
@@ -57,7 +59,7 @@ function renderOrders(order){
               <div class="product-quantity">
                 Quantity: ${product.quantity}
               </div>
-              <button class="buy-again-button button-primary">
+              <button class="buy-again-button button-primary js-buy-again-button" data-product-id="${product.productId}">
                 <img class="buy-again-icon" src="images/icons/buy-again.png">
                 <span class="buy-again-message">Buy it again</span>
               </button>
@@ -72,4 +74,14 @@ function renderOrders(order){
             </div>
       `
     })
+    document.querySelectorAll('.js-buy-again-button').forEach((button)=>{
+      button.addEventListener('click',()=>{
+        let {productId}=button.dataset
+        console.log("first")
+        addToCart(productId,1);
+        updateCartQuantity();
+      })
+    })
 }
+
+

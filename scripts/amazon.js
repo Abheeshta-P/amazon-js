@@ -7,11 +7,15 @@
 
 import {addToCart, calculateCartQuantity} from '../data/cart.js'
 import {products, fetchProducts} from '../data/products.js'
+import { updateCartQuantity } from './utils/amazonHeaderUpdate.js';
 
 //loadProducts(renderProductsGrids);//callback
 fetchProducts().then(()=>{
   renderProductsGrids()
 })
+// .catch(err=>{
+//   console.log("Error : "+err)
+// })
 
 //async request is sent takes time to get the products until then this hould not be rendered so
 function renderProductsGrids(){
@@ -112,9 +116,3 @@ function renderProductsGrids(){
   })
   
 }
-
-  //update cart quantity in image
-  export function updateCartQuantity(){
-    let quantity=calculateCartQuantity();
-    document.querySelector('.js-cart-quantity').innerHTML=quantity;
-  }
