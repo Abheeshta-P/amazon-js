@@ -60,8 +60,8 @@ function renderOrders(order){
                 Quantity: ${product.quantity}
               </div>
               <button class="buy-again-button button-primary js-buy-again-button" data-product-id="${product.productId}">
-                <img class="buy-again-icon" src="images/icons/buy-again.png">
-                <span class="buy-again-message">Buy it again</span>
+                <img class="buy-again-icon js-buy-again-icon" src="images/icons/buy-again.png">
+                <span class="buy-again-message js-buy-again-message">Buy it again</span>
               </button>
             </div>
 
@@ -76,6 +76,14 @@ function renderOrders(order){
     })
     document.querySelectorAll('.js-buy-again-button').forEach((button)=>{
       button.addEventListener('click',()=>{
+        const spanBuyElement=button.querySelector('.js-buy-again-message')
+        const iconBuyElement=button.querySelector('.js-buy-again-icon')
+        setTimeout(()=>{
+          spanBuyElement.innerText='Buy it again'
+          iconBuyElement.src="images/icons/buy-again.png"
+        },2000)
+        iconBuyElement.src="images/icons/added-buy-again.png"
+       spanBuyElement.innerText='Added'
         let {productId}=button.dataset
         console.log("first")
         addToCart(productId,1);
