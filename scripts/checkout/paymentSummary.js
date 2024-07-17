@@ -5,6 +5,7 @@ import { getProductId } from '../../data/products.js';
 import { formatCurrency } from '../utils/money.js';
 
 export function renderPaymentSummary(){
+  console.log(cart)
   //to calculate money of all product
   let productPriceCents=0;
   //to calculate shipping cost of all products
@@ -63,7 +64,7 @@ export function renderPaymentSummary(){
 
   const placeOrder=document.querySelector('.js-place-order-button')
   placeOrder.addEventListener('click',async()=>{
-
+if(calculateCartQuantity()==0) return;
     try{
       const response=await fetch('https://supersimplebackend.dev/orders',{
         //what type of method
@@ -81,10 +82,11 @@ export function renderPaymentSummary(){
       console.log(response)
       const responseJsonOrder=await response.json()
       addOrder(responseJsonOrder)
+      localStorage.removeItem('cart')
       console.log(responseJsonOrder)
       window.location.href='orders.html'
-    }catch{
-      console.log("Unexpected error try later")
+    }catch(err){
+      console.log("Unexpected error try later"+err)
     }
     
   })

@@ -76,11 +76,6 @@ function renderProductsGrids(){
   
   // ************ To made cart interactive ***********
   
-  //update cart quantity in image
-  function updateCartQuantity(){
-    let quantity=calculateCartQuantity();
-    document.querySelector('.js-cart-quantity').innerHTML=quantity;
-  }
   
   
   function messageAdded(productId){
@@ -118,3 +113,8 @@ function renderProductsGrids(){
   
 }
 
+  //update cart quantity in image
+  export function updateCartQuantity(){
+    let quantity=calculateCartQuantity();
+    document.querySelector('.js-cart-quantity').innerHTML=quantity;
+  }

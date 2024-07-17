@@ -1,9 +1,11 @@
 import { orders, orderTimeCalculator } from "../data/orders.js";
+import { getProductId,fetchProducts} from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
+fetchProducts().then(()=>generateOrderHTML())
 
-function renderOrders(){
+function generateOrderHTML(){
   const orderGrid=document.querySelector('.js-orders-grid')
-  console.log(orders)
+  // console.log(orders)
   orders.forEach(order => {
     orderGrid.innerHTML+=`
      <div class="order-container">
@@ -26,65 +28,48 @@ function renderOrders(){
             </div>
           </div>
 
-          <div class="order-details-grid">
-            <div class="product-image-container">
-              <img src="images/products/athletic-cotton-socks-6-pairs.jpg">
-            </div>
-
-            <div class="product-details">
-              <div class="product-name">
-                Black and Gray Athletic Cotton Socks - 6 Pairs
-              </div>
-              <div class="product-delivery-date">
-                Arriving on: August 15
-              </div>
-              <div class="product-quantity">
-                Quantity: 1
-              </div>
-              <button class="buy-again-button button-primary">
-                <img class="buy-again-icon" src="images/icons/buy-again.png">
-                <span class="buy-again-message">Buy it again</span>
-              </button>
-            </div>
-
-            <div class="product-actions">
-              <a href="tracking.html">
-                <button class="track-package-button button-secondary">
-                  Track package
-                </button>
-              </a>
-            </div>
-
-            <div class="product-image-container">
-              <img src="images/products/adults-plain-cotton-tshirt-2-pack-teal.jpg">
-            </div>
-
-            <div class="product-details">
-              <div class="product-name">
-                Adults Plain Cotton T-Shirt - 2 Pack
-              </div>
-              <div class="product-delivery-date">
-                Arriving on: August 19
-              </div>
-              <div class="product-quantity">
-                Quantity: 2
-              </div>
-              <button class="buy-again-button button-primary">
-                <img class="buy-again-icon" src="images/icons/buy-again.png">
-                <span class="buy-again-message">Buy it again</span>
-              </button>
-            </div>
-
-            <div class="product-actions">
-              <a href="tracking.html">
-                <button class="track-package-button button-secondary">
-                  Track package
-                </button>
-              </a>
-            </div>
+          <div class="order-details-grid js-order-details-grid" data-orderId=${order.id}>
+            
           </div>
         </div>
     `
-  });
+    renderOrders(order)
+  })
 }
-renderOrders()
+function renderOrders(order){
+
+
+    let orderDetailsGrid=document.querySelector('.js-order-details-grid')
+    order.products.forEach((product)=>{
+      const matchingProduct=getProductId(product.productId)
+            orderDetailsGrid.innerHTML+=`
+           <div class="product-image-container">
+              <img src="${matchingProduct.image}">
+            </div>
+
+            <div class="product-details">
+              <div class="product-name">
+                ${matchingProduct.name}
+              </div>
+              <div class="product-delivery-date">
+                Arriving on: ${orderTimeCalculator(product.estimatedDeliveryTime)}
+              </div>
+              <div class="product-quantity">
+                Quantity: ${product.quantity}
+              </div>
+              <button class="buy-again-button button-primary">
+                <img class="buy-again-icon" src="images/icons/buy-again.png">
+                <span class="buy-again-message">Buy it again</span>
+              </button>
+            </div>
+
+            <div class="product-actions">
+              <a href="tracking.html?orderId=${order.id}&productId=${product.productId}">
+                <button class="track-package-button button-secondary">
+                  Track package
+                </button>
+              </a>
+            </div>
+      `
+    })
+}
