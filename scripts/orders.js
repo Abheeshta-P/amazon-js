@@ -85,7 +85,6 @@ function renderOrders(order){
         iconBuyElement.src="images/icons/added-buy-again.png"
        spanBuyElement.innerText='Added'
         let {productId}=button.dataset
-        console.log("first")
         addToCart(productId,1);
         updateCartQuantity();
       })

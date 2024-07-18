@@ -19,4 +19,16 @@ export function orderTimeCalculator(orderTime) {
   return `${orderMonth} ${orderDay}`;
 }
 
-console.log(orderTimeCalculator('2024-07-15T15:43:12.216Z')) 
+export function orderDayName(orderTime){
+  const date = dayjs(orderTime);
+  const dayName = date.format('dddd');
+  return dayName;
+}
+export function getOrderObject(orderId){
+  let matchingOrder;
+  orders.forEach(order => {
+    if(order.id==orderId)
+      matchingOrder=order;
+  });
+  return matchingOrder;
+}
