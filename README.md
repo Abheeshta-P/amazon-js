@@ -19,7 +19,7 @@ This is an Amazon clone designed to provide a seamless and intuitive shopping ex
 - Simulate the process of placing an order with selected items in the cart.
 
 ### 🛤️ Track Orders
-- Simulate the process of tracking an product of a order with states preparing,shipped,delivered .
+- Simulate the process of tracking an product of a order with states preparing, shipped, delivered.
 
 ### 💻 Pure Frontend
 - Developed using only HTML, CSS, and JavaScript.
