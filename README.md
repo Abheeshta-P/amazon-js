@@ -1,4 +1,4 @@
-<h1 align="center">Amazon Basic Clone</h1>
+<h1 align="center">Basic Amazon Clone</h1>
 
 ## Overview
 
