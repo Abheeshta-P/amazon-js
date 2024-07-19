@@ -30,6 +30,8 @@ This is an Amazon clone designed to provide a seamless and intuitive shopping ex
 - CSS 🎨
 - JAVASCRIPT 🛠️
 
+### 🪄 Live here : [basicamazon-abheeshta](https://basicamazon-abheeshta.netlify.app/)
+
 ## 🤝 Contributing
 
 This is repo is not meant for contributing .
