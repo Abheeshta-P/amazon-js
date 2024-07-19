@@ -7,6 +7,7 @@
 
 import {addToCart, calculateCartQuantity} from '../data/cart.js'
 import {products, fetchProducts} from '../data/products.js'
+import { addItemToCart } from './utils/addToCartFunctionality.js';
 import { updateCartQuantity } from './utils/amazonHeaderUpdate.js';
 
 //loadProducts(renderProductsGrids);//callback
@@ -79,40 +80,7 @@ function renderProductsGrids(){
   document.querySelector('.js-products-grid').innerHTML=productHTML;
   
   // ************ To made cart interactive ***********
-  
-  
-  
-  function messageAdded(productId){
-    //to select a item which was added
-    const messageAddedToCart=document.querySelector(`.js-added-to-cart-${productId}`)
-    clearTimeout(timerId)
-    timerId=setTimeout(()=>{
-      messageAddedToCart.classList.remove('isVisible');
-    },2000)
-    messageAddedToCart.classList.add('isVisible');
+
+ addItemToCart()
   }
   
-  let timerId;
-  //use button to add item to cart
-  document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
-  
-    //to identify which element was clicked
-    button.addEventListener('click',()=>{
-      const {productId}=button.dataset;//destructuring property
-  
-      //to invoke added message
-      messageAdded(productId)
-  
-      // Check if the product already exists in the cart by inbuilt find which returns that item if it is found else undifined
-      //const productInCart = cart.find(item => item.name === productName);
-  //to identify which value was selected in select 
-  const selectElement=document.querySelector(`.js-quantity-selector-${productId}`);
-  //gives string value by default in DOM  , while adding it concatenates so
-  const quantity = parseInt(selectElement.value); //or use Number()
-      // a similar implementation of this is using for each loop
-      addToCart(productId,quantity);
-      updateCartQuantity();
-    })
-  })
-  
-}
