@@ -7,6 +7,11 @@ export function renderOrderSummary(){
 let cartHTML='';
 let checkOutContainer=document.querySelector('.js-order-summary');
 
+if(cart.length===0){
+  cartHTML=`<div class="shop-now-button-container"><button class="button-primary no-item-cart-button js-no-item-cart-button">
+            Shop now
+          </button></div>`
+}
 //to generate dynamic products
 cart.forEach((cartItem)=>{
   const productId=cartItem.productId;
@@ -64,7 +69,11 @@ cart.forEach((cartItem)=>{
 
 //put items to page
 checkOutContainer.innerHTML=cartHTML;
-
+if(cart.length===0){
+   document.querySelector('.js-no-item-cart-button').addEventListener('click',()=>{
+    window.location.href='index.html'
+})
+}
 // UPDATE quantity related function
 function updateUIValue(productId){
 //add start and input for that element
