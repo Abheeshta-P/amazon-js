@@ -8,7 +8,6 @@ fetchProducts().then(()=>generateOrderHTML()).catch(err=>console.log("Error : "+
 function generateOrderHTML(){
   updateCartQuantity();
   const orderGrid=document.querySelector('.js-orders-grid')
-  // console.log(orders)
   orders.forEach(order => {
     orderGrid.innerHTML+=`
      <div class="order-container">

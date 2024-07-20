@@ -27,7 +27,7 @@ function performSearch(searchValue) {
   let found = false;
   products.forEach(product => {
     if (searchKeyword(product.keywords, searchValue)) {
-      console.log("Got it");
+      console.log("found");
       productHTML(product);
       found = true;
     }
@@ -97,7 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
   searchButton.addEventListener('click', () => {
     const searchField = document.querySelector('.search-bar');
     const searchValue = searchField.value;
-    console.log(searchValue);
     handleSearch(searchValue);
   });
 

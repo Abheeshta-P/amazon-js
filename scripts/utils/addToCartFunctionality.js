@@ -12,7 +12,6 @@ export function messageAdded(productId,timerId){
 }
 export function addItemToCart(){
    let timerId;
-    console.log("Clicked")
     //use button to add item to cart
     document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
   
